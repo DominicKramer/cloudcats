@@ -14,7 +14,7 @@ const gconf = {
 
 const vision = new Vision.ImageAnnotatorClient(gconf);
 const storage = new Storage(gconf);
-const bucket = storage.bucket('cloudcats-bucket');
+const bucket = storage.bucket('dk-cloudcatz');
 
 var count = 0;
 
@@ -33,12 +33,15 @@ async function annotate(url) {
   await new Promise((resolve, reject) => {
     res.data
       .pipe(file.createWriteStream())
+      .on('error', err => {
+        reject(err);
+      })
       .on('finish', () => {
         resolve();
       });
     });
 
-  const labels = await vision.labelDetection(`gs://cloudcats-bucket/${name}`);
+  const labels = await vision.labelDetection(`gs://dk-cloudcatz/${name}`);
   file.delete();
   return {
     url: url,

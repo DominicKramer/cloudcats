@@ -2,13 +2,13 @@
 
 require('@google-cloud/trace-agent').start({
   keyFilename: './keyfile.json',
-  projectId: 'cloudcats-next'
+  projectId: 'dk-cloudcatz'
 });
 
 require('@google-cloud/debug-agent').start({
   allowExpressions: true,
   keyFilename: './keyfile.json',
-  projectId: 'cloudcats-next'
+  projectId: 'dk-cloudcatz'
 });
 
 const Hapi = require('hapi');
@@ -18,6 +18,11 @@ const logger = require('./logger');
 
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+});
+
+process.on('uncaughtException', err => {
+  console.log(`Uncaught exception: ${err.stack}`);
+  process.exit(1);
 });
 
 // Set up the server

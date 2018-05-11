@@ -21,7 +21,7 @@ const PostType = {
 async function publishToBigQuery(data) {
   try {
     const results = await table.insert(data);
-  } catch (e) {
+  } catch (err) {
     logger.error(`error publishing to bigquery: ${util.inspect(err)}\n\t${err.stack}`);
   }
 }

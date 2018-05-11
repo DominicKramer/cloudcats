@@ -39,11 +39,17 @@ function makeRequest(socket) {
       logger.info(`MESSAGE ${cnt}: ${data.type}`);
       socket.emit('cloudcats', data);
     });
+    call.on('error', err => {
+      logger.info(`makeRequest found error event ${err}`);
+      socket.emit('cloudcats', {
+        type: 'FIN'
+      })
+    });
     call.on('end', () => {
       logger.info('Analyze request complete.');
       socket.emit('cloudcats', {
         type: 'FIN'
-      })
+      });
     });
   } catch (e) {
     logger.error("Error making gRPC request");
